@@ -17,17 +17,34 @@ console_handler.setFormatter(formatter)
 
 logging.getLogger().addHandler(console_handler)
 
-def load_config(config_file):
-    config = configparser.ConfigParser()
-    config.read("/home/kaizo/Projects/Python/ASMAT/asmat.conf")
-    print("Sections in config:", config.sections())
-    if 'DEFAULT' in config:
-         print("Options in DEFAULT sections:", config['DEFAULT'].keys())
-    else:
-         print("DEFAULT section not found")
-    return config
+#OS DETECTOR
+def detect_os():
+     os_name = platform.system()
+     
+     if os_name == "Windows":
+          print ("Windows:")
+     elif os_name == "Linux":
+        print("Linux:")
+     elif os_name == "Darwin":
+          print("MacOS:")
+          
+     else:
+          print("UNKNOWN OS:")
+     
+     return os_name
 
+#CONFIG LOADER
+def load_config(config_file):
+     config = configparser.ConfigParser()
+
+     base_path = os.path.dirname(os.path.abspath(__file__))
+     config_path = os.path.join(base_path, config_file)
+     config.read(config_path)
+     return config
+  
+#MAIN PROGRAM
 def main():
+    detect_os()
     config = load_config('asmat.conf')
     logging.info("Starting ASMAT...")
     try: 
